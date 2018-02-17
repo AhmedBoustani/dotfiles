@@ -1,0 +1,32 @@
+[user]
+  name = aab11
+  email = ahmed@monbanquet.fr
+
+[github]
+  user = ahmedboustani
+  email = ahmed.a.boustani@gmail.com
+  token = <token>
+
+[core]
+  editor = vim
+
+[alias]
+  lg = log --pretty=format:\"%C(yellow)%h%Creset - %C(red)%an%Creset, %C(green)%ar%Creset : %C(white)%s%Creset\"
+  graph = log --graph --oneline --decorate=short --branches='*'
+
+[color]
+  ui = auto
+[color "branch"]
+  current = yellow bold
+  local = green bold
+  remote = cyan bold
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+[color "status"]
+  added = green bold
+  changed = yellow bold
+  untracked = red bold

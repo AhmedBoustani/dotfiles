@@ -1,44 +1,39 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/ahmed/.oh-my-zsh
 
-ZSH_THEME="gnzh"
+ZSH_THEME="spaceship"
 
-HYPHEN_INSENSITIVE="true"
+ZSH_CUSTOM=$HOME/.zsh_custom
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
 
-plugins=(git)
+COMPLETION_WAITING_DOTS="true"
 
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git, thefuck
+)
+
+source $ZSH/oh-my-zsh.sh
+source $ZSH_CUSTOM/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /etc/zsh_command_not_found
 
-################## Functions ###################
-mkcd () {
-  mkdir "$1"
-  cd "$1"
-}
+# export MANPATH="/usr/local/man:$MANPATH"
 
-################### Aliases ####################
-alias pls="sudo"
-alias cdmk="mkcd"
-alias composer="./composer.phar"
-alias py="python"
-alias hs="runhaskell"
-alias haskell="ghci"
+export LANG=en_US.UTF-8
 
-################### Exports ####################
-# export LANG=en_US.UTF-8
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+# Preferred editor for local and remote sessions
+#if [[ -n $SSH_CONNECTION ]]; then
+#  export EDITOR='vim'
+#else
+#  export EDITOR='mvim'
+#fi
 
-if [[ -n $SSH_CONNECTION ]]; then
-source $ZSH/oh-my-zsh.sh
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
-
-#################### Evals ####################
-eval "$(rbenv init -)"
-eval $(thefuck --alias)
-
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
