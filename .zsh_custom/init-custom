@@ -1,0 +1,10 @@
+#!/bin/bash
+
+projects=(
+ "https://github.com/zsh-users/zsh-autosuggestions.git"
+)
+
+for p in "${projects[@]}"; do
+  git clone "$p"
+done
+

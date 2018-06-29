@@ -1,0 +1,9 @@
+#!/bin/bash
+
+plugins=(
+  "https://github.com/marzocchi/zsh-notify.git"
+)
+
+for p in "${plugins[@]}"; do
+  git clone "$p"
+done
