@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# use github config in .gitconfig to create a repo on Github
+
+readJSON () {
+  UNAMESTR=`uname`
+  if [ "$UNAMESTR" = "Linux" ]
+  then
+    SED_EXTENDED='-r'
+  elif [ "$UNAMESTR" = "Darwin" ]
+  then
+    SED_EXTENDED='-E'
+  fi
+
+  VALUE=`grep -m 1 "\"$1\"" ${2} | sed ${SED_EXTENDED} 's/^ *//;s/.*: *"//;s/",?//'`
+
+  echo $VALUE
+}
+
+token=`git config github.token`
+if [ -z token ]
+then
+  echo "Missing github token in gitconfig"
+  echo
+  echo "git config --global github.token <github_token>"
+  exit 1
+fi
+
+repo_default=${1:-${PWD##*/}}
+read -p "Repository ($repo_default): " repo
+repo=${repo:-$repo_default}
+
+declare -A options=( ["y"]=true ["Y"]=true )
+read -p "Private (y/N): " opt
+private=$([ $opt ] && echo ${options[$opt]})
+private=${private:-false}
+
+read -p "Description ($desc): " desc
+desc=${desc:-}
+
+echo
+
+ssh_url=`curl -s https://api.github.com/user/repos -H "Authorization: token $token" -d "{\"name\":\"$repo\",\"private\":$private,\"description\":\"$desc\"}" |
+readJSON ssh_url`
+
+if [ -z "$ssh_url" ]
+then
+  echo "ERROR: Repo was not created."
+  echo "Tip: Make sure that the name of the repo is unique"
+  exit 1
+fi
+
+echo "Github repo successfully created!"
+echo
+echo "Next:"
+echo "    echo \"# $repo\" >> README.md"
+echo "    git init"
+echo "    git add README.md"
+echo "    git commit -m \"first commit\""
+echo "    git remote add origin $ssh_url"
+echo "    git push --set-upstream origin master "
+echo
+exit 0
+

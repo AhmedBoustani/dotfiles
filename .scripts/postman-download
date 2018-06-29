@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -o errexit
+
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz
+echo "Extracting postman.tar.gz into /opt/ ..."
+sudo tar -xzf postman.tar.gz -C /opt
+echo "Rmoving postman.tar.gz ..."
+rm postman.tar.gz
+
+echo "Creating a symbolic link to /usr/bin/postman"
+sudo ln -s /opt/Postman/Postman /usr/bin/postman
+
+echo "Creating a desktop file for postman"
+sudo sh -c 'cat > /usr/share/applications/postman.desktop <<EOL
+[Desktop Entry]
+Name=Postman
+Type=Application
+Exec=postman
+Terminal=false
+Icon=/opt/Postman/resources/app/assets/icon.png
+Comment=Postman is the complete toolchain for API developers
+NoDisplay=false
+Categories=Development
+EOL'
+
+echo "Done!"

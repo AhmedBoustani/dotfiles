@@ -1,0 +1,103 @@
+#!/bin/bash
+
+set -o errexit
+
+# TODO: display current branch
+# TODO: colors
+
+GIT_STATUS_UNTRACKED="?"
+GIT_STATUS_ADDED="+"
+GIT_STATUS_MODIFIED="!"
+GIT_STATUS_RENAMED="»"
+GIT_STATUS_DELETED="✘"
+GIT_STATUS_STASHED="$"
+GIT_STATUS_UNMERGED="="
+GIT_STATUS_AHEAD="⇡"
+GIT_STATUS_BEHIND="⇣"
+GIT_STATUS_DIVERGED="⇕"
+
+# inspired by oh-my-zsh file git.zsh
+git_prompt_status() {
+  local INDEX STATUS
+  INDEX=$(command git -C "$1" status --porcelain -b 2> /dev/null)
+  STATUS=""
+
+  if echo "$INDEX" | command grep -E '^\?\? ' &> /dev/null; then
+    STATUS="$GIT_STATUS_UNTRACKED $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^A  ' &> /dev/null; then
+    STATUS="$GIT_STATUS_ADDED $STATUS"
+  elif echo "$INDEX" | grep '^M  ' &> /dev/null; then
+    STATUS="$GIT_STATUS_ADDED $STATUS"
+  elif echo "$INDEX" | grep '^MM ' &> /dev/null; then
+    STATUS="$GIT_STATUS_ADDED $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^ M ' &> /dev/null; then
+    STATUS="$GIT_STATUS_MODIFIED $STATUS"
+  elif echo "$INDEX" | grep '^AM ' &> /dev/null; then
+    STATUS="$GIT_STATUS_MODIFIED $STATUS"
+  elif echo "$INDEX" | grep '^MM ' &> /dev/null; then
+    STATUS="$GIT_STATUS_MODIFIED $STATUS"
+  elif echo "$INDEX" | grep '^ T ' &> /dev/null; then
+    STATUS="$GIT_STATUS_MODIFIED $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^R  ' &> /dev/null; then
+    STATUS="$GIT_STATUS_RENAMED $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^ D ' &> /dev/null; then
+    STATUS="$GIT_STATUS_DELETED $STATUS"
+  elif echo "$INDEX" | grep '^D  ' &> /dev/null; then
+    STATUS="$GIT_STATUS_DELETED $STATUS"
+  elif echo "$INDEX" | grep '^AD ' &> /dev/null; then
+    STATUS="$GIT_STATUS_DELETED $STATUS"
+  fi
+
+  if command git rev-parse --verify refs/stash >/dev/null 2>&1; then
+    STATUS="$GIT_STATUS_STASHED $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^UU ' &> /dev/null; then
+    STATUS="$GIT_STATUS_UNMERGED $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^## [^ ]\+ .*ahead' &> /dev/null; then
+    STATUS="$GIT_STATUS_AHEAD $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^## [^ ]\+ .*behind' &> /dev/null; then
+    STATUS="$GIT_STATUS_BEHIND $STATUS"
+  fi
+
+  if echo "$INDEX" | grep '^## [^ ]\+ .*diverged' &> /dev/null; then
+    STATUS="$GIT_STATUS_DIVERGED $STATUS"
+  fi
+
+  echo "$STATUS"
+}
+
+repo_name() {
+  basename "$(git -C "$1" rev-parse --show-toplevel)"
+}
+
+for d in */; do
+  if [ -d "$d/.git" ]; then
+    printf " %-10s:  %s\n" "$(repo_name "$d")" "$(git_prompt_status "$d")"
+  fi
+done
+
+echo
+echo
+echo
+echo
+echo
+echo " LEGEND"
+echo
+echo "  $GIT_STATUS_UNTRACKED : untracked changes            $GIT_STATUS_ADDED : changes added"
+echo "  $GIT_STATUS_MODIFIED : files modified               $GIT_STATUS_STASHED : changes stashed"
+echo "  $GIT_STATUS_DELETED : files deleted                $GIT_STATUS_BEHIND : local repo is behind"
+echo "  $GIT_STATUS_RENAMED : files renamed                $GIT_STATUS_AHEAD : local repo is ahead"
+echo "  $GIT_STATUS_UNMERGED : unmerged changes             $GIT_STATUS_DIVERGED : local repo diverged"

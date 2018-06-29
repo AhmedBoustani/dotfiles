@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ -d ".git" ]
+then
+  git show-branch -a \
+    | grep '\*' \
+    | grep -v "$(git rev-parse --abbrev-ref HEAD)" \
+    | head -n1 \
+    | sed 's/.*\[\(.*\)\].*/\1/' \
+    | sed 's/[\^~].*//'
+else
+  echo 'fatal: Not a git repository (or any of the parent directories): .git'
+fi

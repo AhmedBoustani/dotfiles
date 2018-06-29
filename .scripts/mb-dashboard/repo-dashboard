@@ -1,0 +1,16 @@
+#!/bin/bash
+
+fetch() {
+  while true; do
+    for d in */; do
+      if [ -d "$d/.git" ]; then
+        git -C "$d" fetch &> /dev/null
+      fi
+    done
+    sleep 180s
+  done
+}
+
+fetch &
+
+watch --no-title repo-scrapper
