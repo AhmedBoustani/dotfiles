@@ -1,0 +1,11 @@
+#!/bin/bash
+
+jdkversion=10.0.1
+
+sudo tar xvzf jdk-${jdkversion}_linux-x64_bin.tar.gz -C /opt
+sudo ln -s /opt/jdk-${jdkversion}/bin/java /usr/local/bin
+sudo ln -s /opt/jdk-${jdkversion}/bin/javac /usr/local/bin
+ 
+# set JAVA_HOME
+echo "export JAVA_HOME=/opt/jdk-${jdkversion}" >> ~/.zshrc  
+source ~/.zshrc
