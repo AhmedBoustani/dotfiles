@@ -2,7 +2,6 @@
 
 set -o errexit
 
-# TODO: display current branch
 # TODO: colors
 
 GIT_STATUS_UNTRACKED="?"
@@ -83,9 +82,13 @@ repo_name() {
   basename "$(git -C "$1" rev-parse --show-toplevel)"
 }
 
+get_branch_name() {
+  git -C "$1" branch | grep \* | cut -d ' ' -f2
+}
+
 for d in */; do
   if [ -d "$d/.git" ]; then
-    printf " %-10s:  %s\n" "$(repo_name "$d")" "$(git_prompt_status "$d")"
+    printf " %-10s:  %s\n" "$(repo_name "$d") ($(get_branch_name "$d"))" "$(git_prompt_status "$d")"
   fi
 done
 
