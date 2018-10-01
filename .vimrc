@@ -16,4 +16,6 @@ filetype plugin indent on
 " =========== END Vundle setup ===========
 
 set tabstop=2 shiftwidth=2 expandtab
-colorscheme lucariox
+syntax enable
+set number
+colorscheme lucario

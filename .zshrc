@@ -26,22 +26,23 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source $ZSH_CUSTOM/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /etc/zsh_command_not_found
-source /etc/profile.d/undistract-me.sh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export GOPATH=$HOME/Inferno
 
 ### notify stuff ###
-zstyle ':notify:*' success-sound "/home/aab13/.zsh_custom/resources/light.ogg"
-zstyle ':notify:*' error-sound "/home/aab13/.zsh_custom/resources/to-the-point.ogg"
+zstyle ':notify:*' success-sound "/home/ahmed/.zsh_custom/resources/light.ogg"
+zstyle ':notify:*' error-sound "/home/ahmed/.zsh_custom/resources/to-the-point.ogg"
 
-zstyle ':notify:*' success-icon "/home/aab13/.zsh_custom/resources/checked.svg"
-zstyle ':notify:*' error-icon "/home/aab13/.zsh_custom/resources/cancel.svg"
+zstyle ':notify:*' success-icon "/home/ahmed/.zsh_custom/resources/checked.svg"
+zstyle ':notify:*' error-icon "/home/ahmed/.zsh_custom/resources/cancel.svg"
 
 zstyle ':notify:*' error-title "Command Failed"
 zstyle ':notify:*' success-title "Command Succeeded"
 ### end notify ###
+
+eval `dircolors /home/ahmed/.dir_colors`
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
